@@ -1,6 +1,5 @@
 import { FC, useState } from 'react'
 import {
-  Box,
   FormControl,
   MenuItem,
   Select as MuiSelect,
@@ -12,7 +11,6 @@ import { List } from '../types/Common'
 
 interface SelectProps {
   loading: boolean
-  label?: string
   items: List[]
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onChange: (event: any) => void
@@ -20,24 +18,21 @@ interface SelectProps {
 
 const Select: FC<MuiSelectProps & SelectProps> = ({
   loading,
-  label,
   items,
   onChange,
 }) => {
-  const [age, setAge] = useState('Select')
+  const [character, setCharacter] = useState('Select')
 
   const handleChange = (event: SelectChangeEvent) => {
     const ev: string = event.target.value
-    setAge(ev)
+    setCharacter(ev)
     onChange(ev)
   }
   return (
     <Stack>
-      <Box my="7px">{label}</Box>
       <FormControl>
         <MuiSelect
-          id="demo-simple-select-standard"
-          value={age}
+          value={character}
           onChange={handleChange}
           sx={{
             fontWeight: 'bold',
