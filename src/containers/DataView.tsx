@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react'
-import BoxData from '../components/BoxData'
+import { Box, Grid } from '@mui/material'
+// import BoxData from '../components/BoxData'
 import Select from '../components/Select'
+import Backdrop from '../components/Backdrop'
 import People from './People'
-import { People as TypePeople } from '../types/People'
-import { useStore } from '../store'
-import { List } from '../types/Common'
 import Planets from './Planets'
 import Starships from './Starships'
-import { Box, Divider } from '@mui/material'
+import { People as TypePeople } from '../types/People'
+import { List } from '../types/Common'
+import { useStore } from '../store'
 
 const DataView = () => {
   const { people, planets, starships } = useStore()
@@ -33,6 +34,7 @@ const DataView = () => {
     data.map(({ name }, i) => ({ label: name, value: i + 1 }))
 
   useEffect(() => {
+    localStorage.clear()
     setClearPlanet()
     setClearStarship()
     getDataPeople(1)
@@ -42,7 +44,8 @@ const DataView = () => {
   }, [loadingPeople])
   return (
     <>
-      <Box width="100%">
+      <Backdrop open={loadingPeople || loadingPlanet || loadingStarship} />
+      <Box width="100%" border="1px solid">
         <Select
           onChange={handleChange}
           loading={loadingPeople}
@@ -50,34 +53,70 @@ const DataView = () => {
         />
       </Box>
       {personData && (
-        <Box
-          width="100%"
-          display="flex"
-          flexDirection="row"
-          justifyContent="center"
-          alignItems="start"
-          marginTop={5}
-        >
-          <BoxData>
-            <People loading={loadingPeople} data={personData} />
-            {!!planet.name && (
-              <>
-                <Divider
-                  sx={{
-                    marginTop: '15px',
-                    marginBottom: '15px',
-                  }}
-                />
-                <Planets loading={loadingPlanet} data={planet} />
-              </>
-            )}
-          </BoxData>
-          <BoxData>
-            {!!starship.length && (
-              <Starships loading={loadingStarship} data={starship} />
-            )}
-          </BoxData>
-        </Box>
+        <Grid container mt={3} spacing={2}>
+          <Grid
+            container
+            item
+            xs={12}
+            md={6}
+            border="1px solid grey"
+            borderRadius="1.25rem"
+          >
+            <Grid item xs={12} md={6}>
+              <h3>People</h3>
+              <People loading={loadingPeople} data={personData} />
+            </Grid>
+            {/* {!!planet.name && ( */}
+            <Grid item xs={12} md={6}>
+              <h3>Planets</h3>
+              <Planets loading={loadingPlanet} data={planet} />
+            </Grid>
+            {/* )} */}
+          </Grid>
+          {/* {!!starship.length && ( */}
+          <Grid
+            item
+            xs={12}
+            md={6}
+            sx={{
+              border: '1px solid grey',
+              borderRadius: '1.25rem',
+            }}
+          >
+            <h3>Starships</h3>
+            <Starships loading={loadingStarship} data={starship} />
+          </Grid>
+          {/* )} */}
+        </Grid>
+
+        // <Box
+        //   width="100%"
+        //   display="flex"
+        //   flexDirection="row"
+        //   justifyContent="center"
+        //   alignItems="start"
+        //   marginTop={5}
+        // >
+        //   <BoxData>
+        //     <People loading={loadingPeople} data={personData} />
+        //     {!!planet.name && (
+        //       <>
+        //         <Divider
+        //           sx={{
+        //             marginTop: '15px',
+        //             marginBottom: '15px',
+        //           }}
+        //         />
+        //         <Planets loading={loadingPlanet} data={planet} />
+        //       </>
+        //     )}
+        //   </BoxData>
+        //   <BoxData>
+        //     {!!starship.length && (
+        //       <Starships loading={loadingStarship} data={starship} />
+        //     )}
+        //   </BoxData>
+        // </Box>
       )}
     </>
   )

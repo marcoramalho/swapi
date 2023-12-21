@@ -18,7 +18,7 @@ const Starships = ({ loading, data }: PlanetsProps) => {
       ) : (
         <Grid container>
           {data.map((row, i) => (
-            <Grid item xs={6} mb="40px" key={i}>
+            <Grid item sm={12} md={6} mb="40px" key={i}>
               <InfoData label="Name" value={row?.name} />
               <InfoData label="Model" value={row?.model} />
               <InfoData
